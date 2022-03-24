@@ -1,6 +1,6 @@
 local coreGui = game:GetService("CoreGui")
 
-local Theme = {
+Theme = {
     WindowBgColor = Color3.fromRGB(43, 43, 43),
     HeaderBgColor = Color3.fromRGB(22, 22, 22),
     HeaderTitleColor = Color3.fromRGB(255, 255, 255),
@@ -14,7 +14,7 @@ local Theme = {
     TabFont = Enum.Font.GothamSemibold
 }
 
-local function CreateWindow(title, parent)
+function CreateWindow(title, parent)
     local window = {}
     local frameParent = coreGui
 
