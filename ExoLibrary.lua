@@ -125,7 +125,7 @@ function Exo.MenuLib:CreateWindow(title, parent)
         self.Navigation.Tabs[name].TabButton.AnchorPoint = Vector2.new(0, 0)
         self.Navigation.Tabs[name].TabButton.Size = UDim2.new(1, 0, 0, 45)
         self.Navigation.Tabs[name].TabButton.Text = name
-        self.Navigation.Tabs[name].TabButton.Font = self.Theme.TabFont
+        self.Navigation.Tabs[name].TabButton.Font = Exo.MenuLib.Theme.TabFont
         self.Navigation.Tabs[name].TabButton.TextSize = 14
         self.Navigation.Tabs[name].TabButton.BorderSizePixel = 0
         self.Navigation.Tabs[name].TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -163,12 +163,12 @@ function Exo.MenuLib:CreateWindow(title, parent)
             local label = Instance.new("TextLabel")
             label.Parent = self.Navigation.Tabs[name].Content.Frame
             label.Text = labelText
-            label.Font = self.Theme.MainFont
+            label.Font = Exo.MenuLib.Theme.MainFont
             label.TextSize = 14
             label.AnchorPoint = Vector2.new(0, 0)
             label.TextXAlignment = Enum.TextXAlignment.Left
             label.TextYAlignment = Enum.TextYAlignment.Top
-            label.TextColor3 = self.Theme.MainTextColor
+            label.TextColor3 = Exo.MenuLib.Theme.MainTextColor
             label.BackgroundTransparency = 1
             return label
         end
@@ -187,25 +187,25 @@ function Exo.MenuLib:CreateWindow(title, parent)
             toggle.Label = Instance.new("TextLabel")
             toggle.Label.Parent = toggle.Frame
             toggle.Label.Text = labelText
-            toggle.Label.Font = self.Theme.MainFont
+            toggle.Label.Font = Exo.MenuLib.Theme.MainFont
             toggle.Label.TextSize = 14
             toggle.Label.AnchorPoint = Vector2.new(0, 0.5)
             toggle.Label.TextXAlignment = Enum.TextXAlignment.Left
             toggle.Label.TextYAlignment = Enum.TextYAlignment.Center
             toggle.Label.Size = UDim2.new(0.7, 0, 1, 0)
             toggle.Label.Position = UDim2.new(0, 0, 0.5, 0)
-            toggle.Label.TextColor3 = self.Theme.MainTextColor
+            toggle.Label.TextColor3 = Exo.MenuLib.Theme.MainTextColor
             toggle.Label.BackgroundTransparency = 1
 
             toggle.Button = Instance.new("TextButton")
             toggle.Button.Parent = toggle.Frame
-            toggle.Button.Font = self.Theme.MainFont
+            toggle.Button.Font = Exo.MenuLib.Theme.MainFont
             toggle.Button.TextSize = 14
             toggle.Button.AnchorPoint = Vector2.new(1, 0.5)
             toggle.Button.Position = UDim2.new(1, 0, 0.5, 0)
             toggle.Button.TextXAlignment = Enum.TextXAlignment.Center
             toggle.Button.TextYAlignment = Enum.TextYAlignment.Center
-            toggle.Button.TextColor3 = self.Theme.MainTextColor
+            toggle.Button.TextColor3 = Exo.MenuLib.Theme.MainTextColor
             toggle.Button.BorderSizePixel = 0
             toggle.Button.Size = UDim2.new(0.3, 0, 1, 0)
             toggle.Button.Activated:Connect(function()
@@ -221,10 +221,10 @@ function Exo.MenuLib:CreateWindow(title, parent)
                 selfToggle.IsOn = newState
 
                 if selfToggle.IsOn then
-                    selfToggle.Button.BackgroundColor3 = self.Theme.ToggleOnColor
+                    selfToggle.Button.BackgroundColor3 = Exo.MenuLib.Theme.ToggleOnColor
                     selfToggle.Button.Text = "On"
                 else
-                    selfToggle.Button.BackgroundColor3 = self.Theme.ToggleOffColor
+                    selfToggle.Button.BackgroundColor3 = Exo.MenuLib.Theme.ToggleOffColor
                     selfToggle.Button.Text = "Off"
                 end
 
