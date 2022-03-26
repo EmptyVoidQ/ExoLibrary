@@ -310,16 +310,3 @@ function Exo.PrintLib:PrintTable(name, table)
     print("================================================================")
     print("END OF TABLE PRINT")
 end
-
-local MainGUI = Instance.new("ScreenGui")
-MainGUI.Parent = game:GetService("CoreGui")
-    
-local Menu = Exo.MenuLib:CreateWindow("ExoCheats | Pet Simulator X", MainGUI)
-local botTab = Menu:CreateTab("Farm Bot")
-    botTab.StatusLabel = botTab:CreateLabel("Status: " .. "Idle")
-    botTab:CreateToggle("Attack Same Coin", false, function(newState) 
-        
-    end)
-
-Menu:SetVisible(true)
-Menu:SelectTab("Farm Bot")
