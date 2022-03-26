@@ -108,12 +108,12 @@ function Exo.MenuLib:CreateWindow(title, parent)
         self.Navigation.Tabs[name] = {
             IsActive = true,
             Select = function(tab)
-                tab.TabButton.BackgroundColor3 = self.Theme.TabBtnHighlightColor
+                tab.TabButton.BackgroundColor3 = Exo.MenuLib.Theme.TabBtnHighlightColor
                 tab.Content.Frame.Visible = true
                 tab.IsActive = true
             end,
             Deselect = function(tab)
-                tab.TabButton.BackgroundColor3 = self.Theme.TabBtnColor
+                tab.TabButton.BackgroundColor3 = Exo.MenuLib.Theme.TabBtnColor
                 tab.Content.Frame.Visible = false
                 tab.IsActive = false
             end
@@ -129,7 +129,7 @@ function Exo.MenuLib:CreateWindow(title, parent)
         self.Navigation.Tabs[name].TabButton.TextSize = 14
         self.Navigation.Tabs[name].TabButton.BorderSizePixel = 0
         self.Navigation.Tabs[name].TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        self.Navigation.Tabs[name].TabButton.BackgroundColor3 = self.Theme.TabBtnColor
+        self.Navigation.Tabs[name].TabButton.BackgroundColor3 = Exo.MenuLib.Theme.TabBtnColor
         self.Navigation.Tabs[name].TabButton.Activated:Connect(function()
             window.Navigation.Tabs:SelectTab(name)
         end)
@@ -310,3 +310,16 @@ function Exo.PrintLib:PrintTable(name, table)
     print("================================================================")
     print("END OF TABLE PRINT")
 end
+
+local MainGUI = Instance.new("ScreenGui")
+MainGUI.Parent = game:GetService("CoreGui")
+    
+local Menu = Exo.MenuLib:CreateWindow("ExoCheats | Pet Simulator X", MainGUI)
+local botTab = Menu:CreateTab("Farm Bot")
+    botTab.StatusLabel = botTab:CreateLabel("Status: " .. "Idle")
+    botTab:CreateToggle("Attack Same Coin", false, function(newState) 
+        
+    end)
+
+Menu:SetVisible(true)
+Menu:SelectTab("Farm Bot")
