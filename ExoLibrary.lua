@@ -1,7 +1,8 @@
 Exo = {
     MenuLib = {},
     LoggerLib = {},
-    PrintLib = {}
+    PrintLib = {},
+    SynapseUtilsLib = {}
 }
 
 
@@ -309,4 +310,61 @@ function Exo.PrintLib:PrintTable(name, table)
 
     print("================================================================")
     print("END OF TABLE PRINT")
+end
+
+
+
+
+--[[
+SYNAPSE UTILS LIBRARY
+--]]
+
+function Exo.SynapseUtilsLib:IterateGCFuncs(script, iterationCallbackFunc)
+    for _, v in next, getgc() do
+        if typeof(v) == "function" then
+            local currentScript = getfenv(v).script
+            if currentScript and typeof(script) == "Instance" then
+                if currentScript == script then
+                    local func = v
+                    iterationCallbackFunc(func, currentScript)
+                end
+            end
+        end
+    end
+end
+
+function Exo.SynapseUtilsLib:GetGCScriptUpValues(script)
+    local upvalues = {}
+    for _, v in next, getgc() do
+        if typeof(v) == "function" then
+            local currentScript = getfenv(v).script
+            if currentScript and typeof(script) == "Instance" then
+                if currentScript == script then
+                    for key, value in next, debug.getupvalues(v) do
+                        upvalues[key] = value
+                    end
+                end
+            end
+        end
+    end
+
+    return upvalues
+end
+
+function Exo.SynapseUtilsLib:GetGCScriptConstants(script)
+    local constants = {}
+    for _, v in next, getgc() do
+        if typeof(v) == "function" then
+            local currentScript = getfenv(v).script
+            if currentScript and typeof(script) == "Instance" then
+                if currentScript == script then
+                    for key, value in next, debug.getconstants(v) do
+                        constants[key] = value
+                    end
+                end
+            end
+        end
+    end
+
+    return constants
 end
