@@ -302,9 +302,13 @@ function Exo.PrintLib:PrintTable(name, table)
 
     for key, value in pairs(table) do
         if key == nil then
-            print("No key | " .. tostring(value))
+            print("nil")
         else
-            print(tostring(key) .. " | " .. typeof(value) .. " | " .. tostring(value))
+            if value == nil then
+                print(tostring(key), "| nil")
+            else
+                print(tostring(key), "|", typeof(value), "|", tostring(value))
+            end
         end
     end
 
