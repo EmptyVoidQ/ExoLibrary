@@ -304,7 +304,7 @@ function Exo.PrintLib:PrintTable(name, table)
         if key == nil then
             print("No key | " .. tostring(value))
         else
-            print(tostring(key) .. " | " .. tostring(value))
+            print(tostring(key) .. " | " .. typeof(value) .. " | " .. tostring(value))
         end
     end
 
@@ -326,7 +326,7 @@ function Exo.SynapseUtilsLib:IterateGCFuncs(script, iterationCallbackFunc)
             if currentScript and typeof(script) == "Instance" then
                 if currentScript == script then
                     local func = v
-                    iterationCallbackFunc(func, currentScript)
+                    iterationCallbackFunc(func)
                 end
             end
         end
