@@ -296,24 +296,34 @@ end
 PRINT LIBRARY
 --]]
 
-function Exo.PrintLib:PrintTable(name, table)
-    print("START OF " .. name .. " TABLE PRINT")
-    print("================================================================")
+function Exo.PrintLib:PrintTable(name, tableToPrint, maxDepth)
+    print("START", name)
+    print("---------------------------------------------------------------")
 
-    for key, value in pairs(table) do
-        if key == nil then
-            print("nil")
-        else
-            if value == nil then
-                print(tostring(key), "| nil")
+    local printTable = function(selfFunc, t, depth)
+        for key, value in pairs(t) do
+            local currentDepth = depth
+            local indentChars = {}
+            for _ = 1, currentDepth, 1 do
+                table.insert(indentChars, ">")
+            end
+
+            if currentDepth <= 0 then
+                print("[" .. typeof(value) .. "]", tostring(key), "=", tostring(value))
             else
-                print(tostring(key), "|", typeof(value), "|", tostring(value))
+                print(table.concat(indentChars, ""), "[" .. typeof(value) .. "]", tostring(key), "=", tostring(value))
+            end
+
+            if typeof(value) == "table" and currentDepth < maxDepth then
+                selfFunc(selfFunc, value, currentDepth + 1)
             end
         end
     end
 
-    print("================================================================")
-    print("END OF TABLE PRINT")
+    printTable(printTable, tableToPrint, 0)
+
+    print("---------------------------------------------------------------")
+    print("END")
 end
 
 
