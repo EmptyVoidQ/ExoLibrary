@@ -504,6 +504,118 @@ function Exo.EspLib:CreateEspBox(parent, player)
     return espBox
 end
 
+function Exo.EspLib:CreateEspBox2(parent, id)
+    local espBox = {
+        Target = nil,
+        TargetVisibilityCheckOrigin = nil
+    }
+
+    espBox.Frame = Instance.new("Frame")
+    espBox.Frame.Parent = parent
+    espBox.Frame.Name = "EspBox" .. id
+    espBox.Frame.Style = Enum.FrameStyle.Custom
+    espBox.Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+    espBox.Frame.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+    espBox.Frame.BackgroundTransparency = 0.85
+    espBox.Frame.BorderSizePixel = 0
+    espBox.Frame.Size = UDim2.new(0, 0, 0, 0)
+    espBox.Frame.Active = false
+    espBox.Frame.Draggable = false
+    espBox.Frame.Selectable = false
+
+    espBox.SetTarget = function(selfEspBox, newTarget)
+        selfEspBox.Target = newTarget
+    end
+
+    espBox.CreateText = function(selfEspBox, textId, offsetPos)
+        selfEspBox[textId] = Instance.new("TextLabel")
+        selfEspBox[textId].Parent = espBox.Frame
+        selfEspBox[textId].Text = ""
+        selfEspBox[textId].TextColor3 = Color3.fromRGB(255, 255, 255)
+        selfEspBox[textId].Position = offsetPos
+        selfEspBox[textId].Font = Enum.Font.Highway
+        selfEspBox[textId].TextSize = 13
+        selfEspBox[textId].AnchorPoint = Vector2.new(0.5, 0)
+        selfEspBox[textId].TextXAlignment = Enum.TextXAlignment.Center
+        selfEspBox[textId].TextYAlignment = Enum.TextYAlignment.Top
+        return selfEspBox[textId]
+    end
+
+    espBox.GetText = function(selfEspBox, textId)
+        return selfEspBox[textId]
+    end
+
+    espBox.SetVisible = function(selfEspBox, show)
+        selfEspBox.Frame.Visible = show
+    end
+
+    espBox.FollowTarget = function(selfEspBox, camera)
+        if not selfEspBox.Target or selfEspBox.Target and not selfEspBox.Target.PrimaryPart then
+            selfEspBox:SetVisible(false)
+            return
+        end
+
+        local targetPos = selfEspBox.Target.PrimaryPart.Position
+        
+        local screenPos, isOnScreen = camera:WorldToScreenPoint(targetPos)
+        selfEspBox:SetVisible(isOnScreen and selfEspBox.Player ~= game:GetService("Players").LocalPlayer)
+
+        if not isOnScreen then
+            return
+        end
+
+        selfEspBox:CalculateBoxSize(camera)
+        --selfEspBox.Frame.Size = UDim2.new(0, 20, 0, 20)
+        selfEspBox.Frame.Position = UDim2.new(0, screenPos.X, 0, screenPos.Y)
+
+        if selfEspBox:IsTargetVisible(camera) then
+            selfEspBox.Frame.BackgroundColor3 = Color3.fromRGB(67, 150, 0)
+        else
+            selfEspBox.Frame.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+        end
+    end
+
+    espBox.IsTargetVisible = function(selfEspBox, camera)
+        local targetPart = selfEspBox.Target.PrimaryPart
+        if selfEspBox.TargetVisibilityCheckOrigin then
+            targetPart = selfEspBox.TargetVisibilityCheckOrigin
+        end
+
+        local direction = (camera.CFrame.Position - targetPart.Position).Unit
+        local distance = (camera.CFrame.Position - targetPart.Position).Magnitude - 4
+
+        local raycastParams = RaycastParams.new()
+        raycastParams.FilterDescendantsInstances = {targetPart}
+        raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+        raycastParams.IgnoreWater = true
+
+        return not workspace:Raycast(targetPart.Position, direction * distance, raycastParams)
+    end
+
+    espBox.SetTransparency = function(selfEspBox, newTransparency)
+        selfEspBox.Frame.BackgroundTransparency = newTransparency
+    end
+
+    espBox.CalculateBoxSize = function(selfEspBox, camera)
+        local characterSize = selfEspBox.Target:GetExtentsSize()
+        local characterCFrame = selfEspBox.Target.PrimaryPart.CFrame
+        local characterPos = selfEspBox.Target.PrimaryPart.Position
+
+        local topLeftScreenPos = camera:WorldToScreenPoint(characterPos + characterCFrame.UpVector * (characterSize.Y * 0.5) - characterCFrame.RightVector * (characterSize.X * 0.5))
+        local bottomRightScreenPos = camera:WorldToScreenPoint(characterPos - characterCFrame.UpVector * (characterSize.Y * 0.5) + characterCFrame.RightVector * (characterSize.X * 0.5))
+
+        local width = math.abs(topLeftScreenPos.X - bottomRightScreenPos.X)
+        local height = math.abs(bottomRightScreenPos.Y - topLeftScreenPos.Y)
+        selfEspBox.Frame.Size = UDim2.new(0, width, 0, height)
+    end
+
+    espBox.Destroy = function(selfEspBox)
+        selfEspBox.Frame:Destroy()
+    end
+
+    return espBox
+end
+
 
 
 
