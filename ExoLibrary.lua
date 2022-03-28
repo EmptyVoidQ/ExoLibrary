@@ -452,8 +452,8 @@ function Exo.EspLib:CreateEspBox(parent, player)
             return
         end
 
-        --selfEspBox:CalculateBoxSize(camera)
-        selfEspBox.Frame.Size = UDim2.new(0, 20, 0, 20)
+        selfEspBox:CalculateBoxSize(camera)
+        --selfEspBox.Frame.Size = UDim2.new(0, 20, 0, 20)
         selfEspBox.Frame.Position = UDim2.new(0, screenPos.X, 0, screenPos.Y)
 
         if selfEspBox:IsTargetVisible(camera) then
