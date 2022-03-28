@@ -330,6 +330,36 @@ function Exo.PrintLib:PrintTable(name, tableToPrint, maxDepth)
     print("END")
 end
 
+function Exo.PrintLib:PrintTableToConsole(name, tableToPrint, maxDepth)
+    rconsoleinfo("START " .. name)
+    rconsoleinfo("--------------------")
+
+    local printTable = function(selfFunc, t, depth)
+        for key, value in pairs(t) do
+            local currentDepth = depth
+            local indentChars = {}
+            for _ = 1, currentDepth, 1 do
+                table.insert(indentChars, ">")
+            end
+
+            if currentDepth <= 0 then
+                rconsoleinfo("[" .. typeof(value) .. "] " .. tostring(key) .. " = " .. tostring(value))
+            else
+                rconsoleinfo(table.concat(indentChars, "") .. " [" .. typeof(value) .. "] " .. tostring(key) .. " = " .. tostring(value))
+            end
+
+            if typeof(value) == "table" and currentDepth < maxDepth then
+                selfFunc(selfFunc, value, currentDepth + 1)
+            end
+        end
+    end
+
+    printTable(printTable, tableToPrint, 0)
+
+    rconsoleinfo("--------------------")
+    rconsoleinfo("END")
+end
+
 
 
 
@@ -422,7 +452,8 @@ function Exo.EspLib:CreateEspBox(parent, player)
             return
         end
 
-        selfEspBox:CalculateBoxSize(camera)
+        --selfEspBox:CalculateBoxSize(camera)
+        selfEspBox.Frame.Size = UDim2.new(0, 20, 0, 20)
         selfEspBox.Frame.Position = UDim2.new(0, screenPos.X, 0, screenPos.Y)
 
         if selfEspBox:IsTargetVisible(camera) then
